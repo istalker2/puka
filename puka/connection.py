@@ -296,7 +296,7 @@ class Connection(object):
         # This is problem is especially painful with regard to
         # async messages, like basic_ack. See #3.
         r, w, e = select.select((self,),
-                                (self,),# if self.needs_write() else (),
+                                (self,) if self.needs_write() else (),
                                 (self,),
                                 0)
         if r or e:
@@ -321,7 +321,7 @@ class Connection(object):
                     break
 
             r, w, e = select.select([self],
-                                    [self],# if self.needs_write() else [],
+                                    [self] if self.needs_write() else [],
                                     [self],
                                     td)
             if r or e:
@@ -363,7 +363,7 @@ class Connection(object):
                 if td < 0:
                     break
             r, w, e = select.select([self],
-                                    [self],# if self.needs_write() else [],
+                                    [self] if self.needs_write() else [],
                                     [self],
                                     td)
             if r or e:
